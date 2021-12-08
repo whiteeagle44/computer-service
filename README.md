@@ -87,3 +87,33 @@ Permissions:
 # Conceptual model
 
 ## List of entities
+
+
+# 4. Logical model
+
+## 4.1 Characteristics of relational model
+
+To convert concemptual model to logical relational model we have to make some changes in project of database. In relational model we can not have many-to-many relationships - those are interchanged with two relationships one-to-many. Also, entities are converted to relations, represented as tables with plurar names of names of entities.
+
+## 4.2 Deletion of uncompatible properties with relational model
+
+In conceptual model there are couple of many-to-many relations. It was necessary to create linking tables and changing one many-to-many relation with two one-to-many relations.
+
+| Relation 1 | Relation 2      | Linking table           | Comments |
+|------------|-----------------|-------------------------|----------|
+| Employees  | Specializations | Aquired specializations |          |
+| Employees  | Orders          | Employees orders        |          |
+
+In created linking tables there are IDs - Primary Keys - of every relation taking part in the relationship.
+
+## 4.3 Normalization process
+
+### 4.3.1 First Normal Form - 1NF
+
+To normalize a database model to First Normal Form it is neccesary to make all attributes of relations atomic - irresolvable. In our logical model in relation 
+
+## 4.4 Logical model - ER schema
+
+## 4.5 Integrity constraints
+
+## 4.6  Denormalization process
