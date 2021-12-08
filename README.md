@@ -108,6 +108,10 @@ In created linking tables there are IDs - Primary Keys - of every relation takin
 
 ## 4.3 Normalization process
 
+### 4.3.1 First Normal Form - 1NF
+
+To normalize a database model to First Normal Form it is neccesary to make all attributes of relations atomic - irresolvable. In our logical model in relation 
+
 ## 4.4 Logical model - ER schema
 
 ## 4.5 Integrity constraints
