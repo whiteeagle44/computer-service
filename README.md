@@ -93,9 +93,16 @@ Permissions:
 
 ## 4.1 Characteristics of relational model
 
-To convert concemptual model to logical relational model we have to make some changes in project of database. In relational model we can not have many to many relationships - those are interchanged with two relationships one to many. Also, entities are converted to relations, represented as tables with plurar names of names of entities.
+To convert concemptual model to logical relational model we have to make some changes in project of database. In relational model we can not have many-to-many relationships - those are interchanged with two relationships one-to-many. Also, entities are converted to relations, represented as tables with plurar names of names of entities.
 
 ## 4.2 Deletion of uncompatible properties with relational model
+
+In conceptual model there are couple of many-to-many relations. It was necessary to create 
+## not sure linking tables is the right word
+linking tables
+and changing one many-to-many relation with two one-to-many relations.
+
+**Table here**
 
 ## 4.3 Normalization process
 
