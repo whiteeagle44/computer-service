@@ -14,11 +14,44 @@ To have the device repaired, the **client** needs to provide his name, phone num
 
 # User views
 
+**Labeling:**
+ r - read access, w - write access
+  
+
+* owner
+  * has rw to all the data
+  * can give access to data by changing employee's role to manager
 * manager
-  * has access to all the data
+  * has r to all the data
+  * has w, but cannot give access to data
 * repairman 
-  * has access to all the orders and client data
-  * sees only the name and surname of other employees 
+  * has rw to all the orders and client data
+  * sees only name, surname and phone number of other employees 
+* client
+  * has rw to his own data and his order
+  * sees name, surname and phone number of employee doing his order 
+
+Everybody has read access to information about company and owner.
+
+Permissions:
+|                             | owner | manager      | repairman    | client        |
+|-----------------------------|-------|--------------|--------------|---------------|
+| has access to all data      | yes   | yes          | no           | no            |
+| can change all data         | yes   | no           | no           | no            |
+| has access to employee data | yes   | yes          | limited (*1) | limited (*2)  |
+| can change employee data    | yes   | limited (*3) | limited (*4) | no            |
+| has access to order data    | yes   | yes          | yes          | limited (*5)  |
+| can change order data       | yes   | yes          | yes          | no            |
+| has access to client data   | yes   | yes          | yes          | limited (*4)  |
+| can change client data      | yes   | yes          | yes          | limited (*4)  |
+
+* 1	only name, surname and phone number
+* 2	only name, surname and phone number of the person doing his order
+* 3	cannot change employees' role to manager
+* 4	only his data
+* 5	only his order 
+
+
 
 # Operations on data
 
@@ -38,8 +71,6 @@ To have the device repaired, the **client** needs to provide his name, phone num
 * assign employees to offices
 * assign employees to orders
 
-
-
 ## Orders
 * add / remove an order
 * modify order status (not started, in progress, completed)
@@ -52,3 +83,7 @@ To have the device repaired, the **client** needs to provide his name, phone num
 * add / remove a client
 * modify personal data
 * if a client has at least one repair with status 'Not started' or 'In progress', his data can't be deleted
+
+# Conceptual model
+
+## List of entities
