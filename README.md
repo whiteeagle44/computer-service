@@ -261,6 +261,14 @@ To have a model in Second Normal Form we have to have our model already in 1NF a
  
 ## 4.5 Integrity constraints
  
+1. Entity integrity - each table has attribute like Primary Key which has automatically following constraints: NOT NULL and UNIQUE.
+2. Tuple integrity - each tuple has independent constraints which have to fulfilled by all tuples independent.
+    1. value format given e.g. Phone Number Varchar2(12)
+    2. declaration of necessary appearances of certain value e.g. id_Manufacturer INTEGER NOT NULL - important in Models relation, where enforced obligatory results in existence of relationship with relation Manufacturers.
+    3. defined unique attribute values e.g. Email Varchar2(30) UNIQUE
+    4. attribute domain narrowing by giving a list of possible values e.g. Devices Type NOT NULL CHECK (Type IN ('Mobile device', 'Computer'))
+3. Relationships between relations(one to many), made on the attributes(Foreign Keys) basis, have the same data type and size in all relations participating in certain relationship.
+
 ## 4.6  Denormalization process
 
 To denormalize a database we have to join two or more relations into one. It is a trade-off between effiency and cheaper way retrieving data. Our relational model is not a big one - 14 relations - we decided not to denormalize our model. But if we were to do so, we would probably denormalize those three relations: Devices, Models and Manufacturers. For example one of the Employees Adam might want to make a report about what devices the Computer Service CS has been repairing. In normalized database like ours Adam would have to write sophisticated SQL JOIN queries to retrieve all data about Devices, Models and Mafucaturers in one table. If Adam could denormalize those relations into one, he would have everything in one place and use it easily and with less effort.
