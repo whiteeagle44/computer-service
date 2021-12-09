@@ -8,7 +8,7 @@ This documentation describes the process of designing a database for the compute
  
 The **Computer Service** has a name, founding date and an owner. It runs **offices** at different locations. Offices have **employees** assigned to it. An employee may be a manager or a repairman. In the latter case, he may specialize in mobile devices, computers, or both. In the database, the information about the salary of each employee is stored.
  
-The database stores **orders** which are made by the clients and consist of **devices** that are repaired now, or were repaired in the past. There is a repairman responsible for an order. Moreover, the status of each order is stored, which can be not started, in progress or completed.
+The database stores **orders** which are made by the clients and consist of **devices** that are repaired now, or were repaired in the past. There is exactly one employee assigned to an order. Moreover, the status of each order is stored, which can be not started, in progress or completed.
  
 To have the device repaired, the **client** needs to provide his name, phone number and email and if he wants the repaired device to be delivered to him, also the address.
  
@@ -56,23 +56,22 @@ Permissions:
  
 ## 2.2 Operations on data
  
-## Computer service
+### Computer service
 * modify information about the entire company
  
-## Offices
+### Offices
 * add / remove an office
 * modify name and address
  
-## Employees
+### Employees
 * add / remove an employee
 * modify personal data
 * modify specialization (for repairman only: mobile device, computer)
 * modify role (manager, repairman)
-* modify salary and account number
-* assign employees to offices
-* assign employees to orders
+* modify salary and bank account number
+* assign an employee to order
  
-## Orders
+### Orders
 * add / remove an order
 * modify order status (not started, in progress, completed)
 * modify an estimated date to hand out and an order date
@@ -80,7 +79,7 @@ Permissions:
 * assing a device to an order
 * assign an employee who will do the order
  
-## Clients
+### Clients
 * add / remove a client
 * modify personal data
 * if a client has at least one repair with status 'Not started' or 'In progress', his data can't be deleted
@@ -92,7 +91,7 @@ Permissions:
 * **Computer Service** - main entity representing a company
 * ****Office**** - entity representing individual office at a certain address
 * **Employee**  - entity representing an employee working at a certain office
-* **Client** - entity representing a client of an office
+* **Client** - entity representing a client of a company 
 * **Order** - entity that represents a certain order, that is a job to repair certain devices 
 * **Device** - entity that represents a device left for repair
 
@@ -101,10 +100,10 @@ Permissions:
 
 |                           | relation name | connectivity | cardinality     | degree |
 |---------------------------|---------------|--------------|-----------------|--------|
-| Computer Service - Office | runs          | 1 : M        | (1) : (0, M)    | binary |
-| Office - Client           | has           | 1 : M        | (1) : (0, M)    | binary |
+| Computer Service - Office | runs          | 1 : M        | (1) : (1, M)    | binary |
+| Computer Service - Client           | has           | 1 : M        | (1) : (0, M)    | binary |
 | Office - Employee         | employs       | 1 : M        | (1) : (0, M)    | binary |
-| Employee - Order          | fulfills      | M : N        | (0, M) : (0, N) | binary |
+| Employee - Order          | fulfills      | 1 : M        | (1) : (0, M) | binary |
 | Client - Order            | makes         | 1 : M        | (1) : (0, M)    | binary |
 | Order - Device            | consists of   | 1 : M        | (1) : (0, M)    | binary |
  
@@ -213,21 +212,19 @@ Surrogate keys (that is ones named `id_[Entity_name]`) were chosen as the primar
 
 A fan trap may exist when there are two or more 1 : M relationships going out of a single entity.
 
-In our case we do not have this problem.
+In our case we do potentially have this problem as Computer Service has two 1 : M relations. But in our case it is expected that from an individual office it is not possible to see the clients as clients are assigned to the whole company, not to the individual office.
 
-We would have it, if there would be a relation between Computer Service and Client, instead of between Office and Client as in our case. Then, we would not be able to link a Client to an Office in which he has put an order, thus having a 'fan' of possibilities. 
+If the clients were assigned to an individual office, then there would be a problem if a client decided to place an order in a different office than previously - duplication of client data.
 
 ### 3.7.2 Chasm traps
 
 A chasm trap may appear when we have a pathway of one or more relationships with optional participation.
 
-In our case, it might have potentially appeared between Office and Order entities.
+In our case, it might potentially appear between Office and Order entities.
 
-However, the chasm trap does not appear here.
+However, the chasm trap does not appear here. That's because we have decided to make the Employee - Order relationship obligatory in a sense that there has to be exactly one Employee for each order.
 
- That's because even if we don't have any employee handling the order, it will always be possible to see orders in a given office, as there will always be a client who's made an order (if there are orders). This gives us a path from office to the orders table.
-
- It could have appeared if there was no relation between Office and Client. Then we would not be able to see the Orders that Employees didn't start working on yet.
+On the other hand, if there was an option for an order to have no employee assigned to it, the chasm trap would be present. We would not be able to access information about orders not assigned to employees, from the office level.
 
 # 4. Logical model
  
