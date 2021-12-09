@@ -1,10 +1,10 @@
 # Computer service
  
-# About
+# 1. Introduction
  
 This documentation describes the process of designing a database for the computer service, that is a company offering repairs of mobile devices and computers.
  
-## Data requirements
+## 1.1 Data requirements
  
 The **Computer Service** has a name, founding date and an owner. It runs **offices** at different locations. Offices have **employees** assigned to it. An employee may be a manager or a repairman. In the latter case, he may specialize in mobile devices, computers, or both. In the database, the information about the salary of each employee is stored.
  
@@ -12,11 +12,12 @@ The database stores **orders** which are made by the clients and consist of **de
  
 To have the device repaired, the **client** needs to provide his name, phone number and email and if he wants the repaired device to be delivered to him, also the address.
  
-# User views
+# 2. System definition
+
+## 2.1 User views
  
 **Labeling:**
  r - read access, w - write access
- 
  
 * owner
   * has rw to all the data
@@ -53,7 +54,7 @@ Permissions:
  
  
  
-# Operations on data
+## 2.2 Operations on data
  
 ## Computer service
 * modify information about the entire company
@@ -84,9 +85,9 @@ Permissions:
 * modify personal data
 * if a client has at least one repair with status 'Not started' or 'In progress', his data can't be deleted
 
-# Conceptual model
+# 3. Conceptual model
  
-## List of entities
+## 3.1 List of entities
 
 * **Computer Service** - main entity representing a company
 * ****Office**** - entity representing individual office at a certain address
@@ -96,11 +97,11 @@ Permissions:
 * **Device** - entity that represents a device left for repair
 
 
-## Relations between entities
+## 3.2 Relations between entities
 
 |                           | relation name | connectivity | cardinality     | degree |
 |---------------------------|---------------|--------------|-----------------|--------|
-| Computer Service - Office | runs          | 1 : M        | (1) : (1, M)    | binary |
+| Computer Service - Office | runs          | 1 : M        | (1) : (0, M)    | binary |
 | Office - Client           | has           | 1 : M        | (1) : (0, M)    | binary |
 | Office - Employee         | employs       | 1 : M        | (1) : (0, M)    | binary |
 | Employee - Order          | fulfills      | M : N        | (0, M) : (0, N) | binary |
