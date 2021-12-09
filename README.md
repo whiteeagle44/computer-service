@@ -248,15 +248,48 @@ In created linking tables there are IDs - Primary Keys - of every relation takin
 ## 4.3 Normalization process
  
 ### 4.3.1 First Normal Form - 1NF
- 
-To normalize a database model to First Normal Form it is neccesary to make all attributes of relations atomic - irresolvable. Moreover, in any relation we can not have a repetitive groups. In our logical model in relation Offices we have segmented attribute Address consisting of City, Street, Flat_no and Postal code. We create a new relation called Addresses with before mentioned attributes. This redundancy occured also in such relations: Employees and Clients, so we removed attribute address from those three relations and we added relationships with new relation Addresses to all these relations. As well as Owner in Computer Services relation is a segmented attribute with Name and Surname. It laso had to be removed from the Computer Services relation and made a new relation with relationship to Computer Services.
+To normalize a database model to First Normal Form it is neccesary to:
+1. make all attributes of relations atomic
+2. move attributes with repeated groups to new tables 
+
+**Examples showcasing the normalization using the first rule *(make all attributes of relations atomic)* are described below:**  
+In our conceptual model in relation Offices we have a segmented attribute Address consisting of City, Street, Flat_no and Postal code. 
+
+We create a new table called Addresses with the aforementioned attributes. 
+
+This field occured also in tables: Employees and Clients, so we removed attribute address from those three tables and added relationships with new tables Addresses to all these tables. 
+
+Another segmented field is the Owner attribute in the Computer_Service, that has a Name and Surname. It laso had to be removed from the Computer Services relation and moved to a new relation with relationship to Computer Services.
+
+**Examples showcasing the normalization using second rule *(move attributes with repeated groups to new tables)*:**  
+
+From the Device entity in the conceptual model, two new relations were created 'extracting' the Model and Manufacturer attributes into new tables. That is because different devices owned by different customer may have repeating model name and manufacturer name. 
+
+Moreover, the specialization in addition to being a non-atomic attribute in the conceptual model, also may be a repeated group. Therefore, it also needs to be moved out to a seperate table. 
 
 ### 4.3.2 Second Normal Form - 2NF
 
-To have a model in Second Normal Form we have to have our model already in 1NF as well as having such property that all non-key attributes are fully fuctional dependent on primary key - no partial dependencies.
+To have a model in Second Normal Form we need to check that:
+* model is in 1NF
+* all non-key attributes are fully fuctionally dependent on primary key - no partial dependencies.
+
+In our case we automatically have the model in the Second Normal Form, once we have it in the first one.
+
+This is because second normal form applies to relations with composite keys, that is, relations with a primary key composed of two or more attributes. 
+
+In our case all the primary keys are composed of a single attribute each. 
+
+Were we to have composite primary keys, we would need to make sure that all non-key attributes depend fully on the primary key, meaning that with one non-key attribute missing, there would no longer be a dependency.
 
 ### 4.3.3 Third Normal Form - 3NF
- 
+
+To normalize a database model to the Third Normal Form we need to check that:
+* model is in 2NF
+* there are no non-primary key attributes in transitive dependencies with the primary key
+
+In our case all the non-primary keys are functionally depenendent on only their primary keys. 
+
+Thus, the Third Normal Form is already present in our case once we are in the second form.
 ## 4.4 Logical model - ER schema
  
 ## 4.5 Integrity constraints
