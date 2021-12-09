@@ -173,7 +173,7 @@ Surrogate keys (that is ones named `id_[Entity_name]`) were chosen as the primar
 |                  | Share_capital       |               |
 | Office           | id_Office           | primary key   |
 |                  | Name                |               |
-|                  | Address             |               |
+|                  | Address             | alternate key |
 | Employee         | id_Employee         | primary key   |
 |                  | Name                |               |
 |                  | Surname             |               |
@@ -205,7 +205,29 @@ Surrogate keys (that is ones named `id_[Entity_name]`) were chosen as the primar
 |                  | Model               |               |
 |                  | Type                |               |
 
+## 3.6 ER diagram on a conceptual level
 
+## 3.7 Connection traps
+
+### 3.7.1 Fan traps
+
+A fan trap may exist when there are two or more 1 : M relationships going out of a single entity.
+
+In our case we do not have this problem.
+
+We would have it, if there would be a relation between Computer Service and Client, instead of between Office and Client as in our case. Then, we would not be able to link a Client to an Office in which he has put an order, thus having a 'fan' of possibilities. 
+
+### 3.7.2 Chasm traps
+
+A chasm trap may appear when we have a pathway of one or more relationships with optional participation.
+
+In our case, it might have potentially appeared between Office and Order entities.
+
+However, the chasm trap does not appear here.
+
+ That's because even if we don't have any employee handling the order, it will always be possible to see orders in a given office, as there will always be a client who's made an order (if there are orders). This gives us a path from office to the orders table.
+
+ It could have appeared if there was no relation between Office and Client. Then we would not be able to see the Orders that Employees didn't start working on yet.
 
 # 4. Logical model
  
