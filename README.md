@@ -206,6 +206,8 @@ Surrogate keys (that is ones named `id_[Entity_name]`) were chosen as the primar
 
 ## 3.6 ER diagram on a conceptual level
 
+![conceptual model](conceptual-model.png)
+
 ## 3.7 Connection traps
 
 ### 3.7.1 Fan traps
