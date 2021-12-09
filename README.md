@@ -248,6 +248,10 @@ In created linking tables there are IDs - Primary Keys - of every relation takin
 ## 4.3 Normalization process
  
 ### 4.3.1 First Normal Form - 1NF
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> cbb1b6304a43f65ce3729d2bd0452b00fa3ab9fd
 To normalize a database model to First Normal Form it is neccesary to:
 1. make all attributes of relations atomic
 2. move attributes with repeated groups to new tables 
@@ -290,6 +294,10 @@ To normalize a database model to the Third Normal Form we need to check that:
 In our case all the non-primary keys are functionally depenendent on only their primary keys. 
 
 Thus, the Third Normal Form is already present in our case once we are in the second form.
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> cbb1b6304a43f65ce3729d2bd0452b00fa3ab9fd
 ## 4.4 Logical model - ER schema
  
 ## 4.5 Integrity constraints
