@@ -232,7 +232,7 @@ To normalize a database model to First Normal Form it is neccesary to make all a
 
 ### 4.3.2 Second Normal Form - 2NF
 
-To have a model in Second Normal Form we have to have our model already in 1NF as well as having such property that all non-key attributes are fully fuctional dependent on primary key.
+To have a model in Second Normal Form we have to have our model already in 1NF as well as having such property that all non-key attributes are fully fuctional dependent on primary key - no partial dependencies.
 
 ### 4.3.3 Third Normal Form - 3NF
  
