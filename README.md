@@ -228,28 +228,6 @@ However, the chasm trap does not appear here. That's because we have decided to 
 
 On the other hand, if there was an option for an order to have no employee assigned to it, the chasm trap would be present. We would not be able to access information about orders not assigned to employees, from the office level.
 
-## 3.6 ER diagram on a conceptual level
-
-## 3.7 Connection traps
-
-### 3.7.1 Fan traps
-
-A fan trap may exist when there are two or more 1 : M relationships going out of a single entity.
-
-In our case we do potentially have this problem as Computer Service has two 1 : M relations. But in our case it is expected that from an individual office it is not possible to see the clients as clients are assigned to the whole company, not to the individual office.
-
-If the clients were assigned to an individual office, then there would be a problem if a client decided to place an order in a different office than previously - duplication of client data.
-
-### 3.7.2 Chasm traps
-
-A chasm trap may appear when we have a pathway of one or more relationships with optional participation.
-
-In our case, it might potentially appear between Office and Order entities.
-
-However, the chasm trap does not appear here. That's because we have decided to make the Employee - Order relationship obligatory in a sense that there has to be exactly one Employee for each order.
-
-On the other hand, if there was an option for an order to have no employee assigned to it, the chasm trap would be present. We would not be able to access information about orders not assigned to employees, from the office level.
-
 # 4. Logical model
  
 ## 4.1 Characteristics of relational model
