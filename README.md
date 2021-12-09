@@ -262,5 +262,5 @@ To have a model in Second Normal Form we have to have our model already in 1NF a
 ## 4.5 Integrity constraints
  
 ## 4.6  Denormalization process
- 
 
+To denormalize a database we have to join two or more relations into one. It is a trade-off between effiency and cheaper way retrieving data. Our relational model is not a big one - 14 relations - we decided not to denormalize our model. But if we were to do so, we would probably denormalize those three relations: Devices, Models and Manufacturers. For example one of the Employees Adam might want to make a report about what devices the Computer Service CS has been repairing. In normalized database like ours Adam would have to write sophisticated SQL JOIN queries to retrieve all data about Devices, Models and Mafucaturers in one table. If Adam could denormalize those relations into one, he would have everything in one place and use it easily and with less effort.
