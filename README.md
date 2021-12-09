@@ -226,6 +226,28 @@ However, the chasm trap does not appear here. That's because we have decided to 
 
 On the other hand, if there was an option for an order to have no employee assigned to it, the chasm trap would be present. We would not be able to access information about orders not assigned to employees, from the office level.
 
+## 3.6 ER diagram on a conceptual level
+
+## 3.7 Connection traps
+
+### 3.7.1 Fan traps
+
+A fan trap may exist when there are two or more 1 : M relationships going out of a single entity.
+
+In our case we do potentially have this problem as Computer Service has two 1 : M relations. But in our case it is expected that from an individual office it is not possible to see the clients as clients are assigned to the whole company, not to the individual office.
+
+If the clients were assigned to an individual office, then there would be a problem if a client decided to place an order in a different office than previously - duplication of client data.
+
+### 3.7.2 Chasm traps
+
+A chasm trap may appear when we have a pathway of one or more relationships with optional participation.
+
+In our case, it might potentially appear between Office and Order entities.
+
+However, the chasm trap does not appear here. That's because we have decided to make the Employee - Order relationship obligatory in a sense that there has to be exactly one Employee for each order.
+
+On the other hand, if there was an option for an order to have no employee assigned to it, the chasm trap would be present. We would not be able to access information about orders not assigned to employees, from the office level.
+
 # 4. Logical model
  
 ## 4.1 Characteristics of relational model
@@ -247,11 +269,12 @@ In created linking tables there are IDs - Primary Keys - of every relation takin
  
 ### 4.3.1 First Normal Form - 1NF
  
-To normalize a database model to First Normal Form it is neccesary to make all attributes of relations atomic - irresolvable. Moreover, in any relation we can not have a repetitive groups. In our logical model in relation Offices we have segmented attribute Address consisting of City, Street, Flat_no and Postal code. We create a new relation called Addresses with before mentioned attributes. This redundancy occured also in such relations: Employees and Clients, so we removed attribute address from those three relations and we added relationships with new relation Addresses to all these relations.
+To normalize a database model to First Normal Form it is neccesary to make all attributes of relations atomic - irresolvable. Moreover, in any relation we can not have a repetitive groups. In our logical model in relation Offices we have segmented attribute Address consisting of City, Street, Flat_no and Postal code. We create a new relation called Addresses with before mentioned attributes. This redundancy occured also in such relations: Employees and Clients, so we removed attribute address from those three relations and we added relationships with new relation Addresses to all these relations. As well as Owner in Computer Services relation is a segmented attribute with Name and Surname. It laso had to be removed from the Computer Services relation and made a new relation with relationship to Computer Services.
 
 ### 4.3.2 Second Normal Form - 2NF
 
-To have a model in Second Normal Form we have to have our model already in 1NF as well as 
+To have a model in Second Normal Form we have to have our model already in 1NF as well as having such property that all non-key attributes are fully fuctional dependent on primary key - no partial dependencies.
+
 
 ### 4.3.3 Third Normal Form - 3NF
  
