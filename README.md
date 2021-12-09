@@ -108,7 +108,105 @@ Permissions:
 | Client - Order            | makes         | 1 : M        | (1) : (0, M)    | binary |
 | Order - Device            | consists of   | 1 : M        | (1) : (0, M)    | binary |
  
- 
+## 3.3 Entities in detail
+
+| Entity name      | Attribute name      | Data Type     | Domain          | Mandatory? | Atomic? | Description                      | Additional Info                                                                   |
+|------------------|---------------------|---------------|-----------------|------------|---------|----------------------------------|-----------------------------------------------------------------------------------|
+| Computer_Service | id_Computer_Service | SmallInt      |                 |            |         | Computer Service id, PK          |                                                                                   |
+|                  | Name                | VarChar(20)   |                 | Y          | Y       | Computer Service Name            |                                                                                   |
+|                  | Founding_date       | Date          |                 | Y          | Y       | Computer Service founding date   |                                                                                   |
+|                  | Owner               | VarChar(50)   |                 | Y          | N       | Computer Service owner           | consists of first and last name                                                   |
+|                  | Share_capital       | Money         |                 | N          | Y       | Share capital of the company     |                                                                                   |
+| Office           | id_Office           | SmallInt      |                 |            |         | Office id number, PK             |                                                                                   |
+|                  | Name                | VarChar(20)   |                 | Y          | Y       | Office Name                      |                                                                                   |
+|                  | Address             | VarChar(200)  |                 | Y          | N       | Office Address                   | consists of street, city and postal code                                          |
+| Employee         | id_Employee         | Integer       |                 |            |         | Employee id number, PK           |                                                                                   |
+|                  | Name                | VarChar(20)   |                 | Y          | Y       | Employee Name                    |                                                                                   |
+|                  | Surname             | VarChar(30)   |                 | Y          | Y       | Employee Surname                 |                                                                                   |
+|                  | Sex                 | Character(1)  | SexD            | Y          | Y       | Employee sex                     | Sex IN ('F', 'M')                                                                 |
+|                  | Email               | VarChar(30)   |                 | Y          | Y       | Employee email                   |                                                                                   |
+|                  | Phone_number        | VarChar(12)   |                 | Y          | Y       | Employee phone number            |                                                                                   |
+|                  | Address             | VarChar(200)  |                 | Y          | N       | Employee address                 | consists of street, city and postal code                                          |
+|                  | Date_of_birth       | Date          |                 | Y          | Y       | Employee date of birth           |                                                                                   |
+|                  | Date_of_employment  | Date          |                 | Y          | Y       | Employee date of employment      |                                                                                   |
+|                  | Role                | VarChar(9)    | RoleD           | Y          | Y       | Employee role                    | Role IN ('Repairman', 'Manager')                                                  |
+|                  | PESEL               | Character(11) |                 | N          | Y       | Employee PESEL number            |                                                                                   |
+|                  | Account_no          | Character(26) |                 | N          | Y       | Employee account number          |                                                                                   |
+|                  | Salary              | Money         |                 | N          | Y       | Employee Salary                  |                                                                                   |
+|                  | Specialization      | Bigint        | SpecializationD | N          | N       | Employee Specialization          | Empty for Manager. For Repairman: Specialization IN ('Mobile device', 'Computer') |
+| Client           | id_Client           | SmallInt      |                 |            |         | Client id number, PK             |                                                                                   |
+|                  | Name                | VarChar(20)   |                 | Y          | Y       | Client name                      |                                                                                   |
+|                  | Surname             | VarChar(30)   |                 | Y          | Y       | Client surname                   |                                                                                   |
+|                  | Sex                 | Character(1)  | SexD            | Y          | Y       | Client sex                       | Sex IN ('F', 'M')                                                                 |
+|                  | Email               | VarChar(30)   |                 | Y          | Y       | Client email                     |                                                                                   |
+|                  | Phone_number        | VarChar(12)   |                 | Y          | Y       | Client phone number              |                                                                                   |
+|                  | Address             | VarChar(200)  |                 | N          | N       | Client address                   | consists of street, city and postal code                                          |
+| Order            | id_Order            | Integer       |                 |            |         | Order id number, PK              |                                                                                   |
+|                  | Status              | VarChar(11)   | StatusD         | Y          | Y       | Repair Status                    | Status IN ('Not started', 'In progress', 'Completed')                             |
+|                  | Order_date          | Date          |                 | Y          | Y       | Order date                       |                                                                                   |
+|                  | Price               | Integer       |                 | Y          | Y       | Price for the order              |                                                                                   |
+|                  | Hand_out_date       | Date          |                 | N          | Y       | Date device will be/was hand out |                                                                                   |
+| Device           | id_Device           | Integer       |                 |            |         | Device id number, PK             |                                                                                   |
+|                  | Manufacturer        | VarChar(20)   |                 | Y          | Y       | Device Manufacturer              |                                                                                   |
+|                  | Model               | VarChar(20)   |                 | Y          | Y       | Device Name                      |                                                                                   |
+|                  | Type                | Bigint        | TypeD           | Y          | Y       | Device Type                      | Type IN ('Mobile device', 'Computer')                                             |
+
+## 3.4 Other business rules
+Business rules not included in a table in 3.3.
+
+Client, order:
+* if a client has at least one repair with status 'Not started' or 'In progress', his data can't be deleted
+
+Order: 
+* Hand out date cannot be before order date
+
+## 3.5 Primary and candidate keys
+
+Surrogate keys (that is ones named `id_[Entity_name]`) were chosen as the primary keys of each of the entities as they enable easier changes to attributes when business requirements change.
+
+| Entity name      | Attribute name      |               |
+|------------------|---------------------|---------------|
+| Computer_Service | id_Computer_Service | primary key   |
+|                  | Name                |               |
+|                  | Founding_date       |               |
+|                  | Owner               |               |
+|                  | Share_capital       |               |
+| Office           | id_Office           | primary key   |
+|                  | Name                |               |
+|                  | Address             |               |
+| Employee         | id_Employee         | primary key   |
+|                  | Name                |               |
+|                  | Surname             |               |
+|                  | Sex                 |               |
+|                  | Email               | alternate key |
+|                  | Phone_number        | alternate key |
+|                  | Address             |               |
+|                  | Date_of_birth       |               |
+|                  | Date_of_employment  |               |
+|                  | Role                |               |
+|                  | PESEL               | alternate key |
+|                  | Account_no          |               |
+|                  | Salary              |               |
+|                  | Specialization      |               |
+| Client           | id_Client           | primary key   |
+|                  | Name                |               |
+|                  | Surname             |               |
+|                  | Sex                 |               |
+|                  | Email               | alternate key |
+|                  | Phone_number        | alternate key |
+|                  | Address             |               |
+| Order            | id_Order            | primary key   |
+|                  | Status              |               |
+|                  | Order_date          |               |
+|                  | Price               |               |
+|                  | Hand_out_date       |               |
+| Device           | id_Device           | primary key   |
+|                  | Manufacturer        |               |
+|                  | Model               |               |
+|                  | Type                |               |
+
+
+
 # 4. Logical model
  
 ## 4.1 Characteristics of relational model
