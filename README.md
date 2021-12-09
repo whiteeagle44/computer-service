@@ -228,7 +228,7 @@ In created linking tables there are IDs - Primary Keys - of every relation takin
  
 ### 4.3.1 First Normal Form - 1NF
  
-To normalize a database model to First Normal Form it is neccesary to make all attributes of relations atomic - irresolvable. Moreover, in any relation we can not have a repetitive groups. In our logical model in relation Offices we have segmented attribute Address consisting of City, Street, Flat_no and Postal code. We create a new relation called Addresses with before mentioned attributes. This redundancy occured also in such relations: Employees and Clients, so we removed attribute address from those three relations and we added relationships with new relation Addresses to all these relations.
+To normalize a database model to First Normal Form it is neccesary to make all attributes of relations atomic - irresolvable. Moreover, in any relation we can not have a repetitive groups. In our logical model in relation Offices we have segmented attribute Address consisting of City, Street, Flat_no and Postal code. We create a new relation called Addresses with before mentioned attributes. This redundancy occured also in such relations: Employees and Clients, so we removed attribute address from those three relations and we added relationships with new relation Addresses to all these relations. As well as Owner in Computer Services relation is a segmented attribute with Name and Surname. It laso had to be removed from the Computer Services relation and made a new relation with relationship to Computer Services.
 
 ### 4.3.2 Second Normal Form - 2NF
 
