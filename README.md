@@ -232,18 +232,11 @@ On the other hand, if there was an option for an order to have no employee assig
  
 ## 4.1 Characteristics of relational model
  
-To convert concemptual model to logical relational model we have to make some changes in project of database. In relational model we can not have many-to-many relationships - those are interchanged with two relationships one-to-many. Also, entities are converted to relations, represented as tables with plurar names of names of entities.
+To convert conceptual model to logical relational model we have to make some changes in project of database. In relational model we cannot have many-to-many relationships - each of this is changed to two one-to-many relationships. Also, entities are converted to relations, represented as tables with plural names of entities.
  
-## 4.2 Deletion of uncompatible properties with relational model
+## 4.2 Deletion of properties uncompatible with relational model
  
-In conceptual model there are couple of many-to-many relations. It was necessary to create linking tables and changing one many-to-many relation with two one-to-many relations.
- 
-| Relation 1 | Relation 2      | Linking table           | Comments |
-|------------|-----------------|-------------------------|----------|
-| Employees  | Specializations | Aquired specializations |          |
-| Employees  | Orders          | Employees orders        |          |
- 
-In created linking tables there are IDs - Primary Keys - of every relation taking part in the relationship.
+In our case there are no many-to-many relationships in the conceptual model. Thus, we do not need to create linking tables and change many-to-many relations with two one-to-many relations.
  
 ## 4.3 Normalization process
  
@@ -263,7 +256,7 @@ Another segmented field is the Owner attribute in the Computer_Service, that has
 
 **Examples showcasing the normalization using second rule *(move attributes with repeated groups to new tables)*:**  
 
-From the Device entity in the conceptual model, two new relations were created 'extracting' the Model and Manufacturer attributes into new tables. That is because different devices owned by different customer may have repeating model name and manufacturer name. 
+From the Device entity in the conceptual model, two new relations were created 'extracting' the Model and Manufacturer attributes into new tables. That is because different devices owned by different customers may have repeating model name and manufacturer name. 
 
 Moreover, the specialization in addition to being a non-atomic attribute in the conceptual model, also may be a repeated group. Therefore, it also needs to be moved out to a seperate table. 
 
