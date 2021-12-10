@@ -293,6 +293,8 @@ Thus, the Third Normal Form is already present in our case once we are in the se
 ## 4.4 Logical model - ER schema
  
 **TO DO - Zdjęcie modelu logicznego tutaj** 
+![logical model](logical-model.png)
+Najlepiej będzie wydrukowac na oddzielnej stronie bo nic teraz nie widać a widać musi być. Tak mówił gość
 
 ## 4.5 Integrity constraints
  
@@ -312,21 +314,24 @@ To denormalize a database we have to join two or more relations into one. It is 
 
 ## 5.1 Project of transactions and verification of their feasibility
 
-| Transaction name                                       | Required recources        | Verification | Comments |
+## TO DO - dokonczyc tabelke i ogarnac ta weryfikacje
+
+| Transaction name                                       | Required recources        | Verification Yes/No | Comments |
 |--------------------------------------------------------|---------------------------|--------------|----------|
 | Adding, modification, removal of employee data         | Employee Table            |              | -        |
 | Employee data view                                     | Employee Table            |              | -        |
 | Adding, modification, removal of employee salary data  | Employee and Salary Table |              | -        |
-| Salary data view                                       | Employee and Salary Table |              |          |
-| Adding, modification, removal of Computer Service data | Computer Service Table    |              |          |
-| Computer Service data view                             | Computer Service Table    |              |          |
-| Adding, modification, removal of orders data           | Orders Table              |              |          |
-| Orders data view                                       | Orders Table              |              |          |
-| Adding, modification, removal of clients data          | Clients Table             |              |          |
-| Clients data view          | Clients Table             |              |          |
-| Adding, modification, removal of Devices data       | Devices and Orders Table             |              |          |
-| Devices data view          | Devices Table             |              |          |
-
+| Salary data view                                       | Employee and Salary Table |              |    -      |
+| Adding, modification, removal of Computer Service data | Computer Service Table    |              |     -     |
+| Computer Service data view                             | Computer Service Table    |              |     -     |
+| Adding, modification, removal of orders data           | Orders Table              |              |   -       |
+| Orders data view                                       | Orders Table              |              |   -       |
+| Adding, modification, removal of clients data          | Clients Table             |              |   -       |
+| Clients data view          | Clients Table             |              |    -      |
+| Adding, modification, removal of Devices data       | Devices, Models, Manufacturers and Orders Table             |              |    -      |
+| Devices data view          | Devices, Models, Manufacturers and Orders Table             |              |   -       |
+| Adding, modification, removal of Orders data           | Clients, Devices, Models, Manufacturers and Orders Table             |              |   -       |
+| Orders data view           | Clients, Devices, Models, Manufacturers and Orders Table             |              |   -       |
 
 ## 5.2 indexing TO DO - better name for this section
 
@@ -357,349 +362,7 @@ To denormalize a database we have to join two or more relations into one. It is 
 ### Models - Manufacturers
 - CREATE INDEX IX_Models_have_manufacturers ON Models (Name)
 
-/*
-Created: 06/12/2021
-Modified: 08/12/2021
-Project: Computer Service
-Model: Logical Model
-Author: Piotr Kitłowski, Marcin Jankowski
-Database: Oracle 11g Release 1
-*/
-
--- Create tables section -------------------------------------------------
-
--- Table Computer_Services
-
-CREATE TABLE Computer_Services(
-  id_Computer_Service Integer NOT NULL,
-  Name Varchar2(20 ) NOT NULL,
-  Founding_date Date NOT NULL,
-  Share_capital Number(10,2)
-)
-/
-
--- Add keys for table Computer_Services
-
-ALTER TABLE Computer_Services ADD CONSTRAINT Computer_ServicePK PRIMARY KEY (id_Computer_Service)
-/
-
--- Table Offices
-
-CREATE TABLE Offices(
-  id_Offices Integer NOT NULL,
-  Name Varchar2(20 ) NOT NULL,
-  Computer_Service_id Integer NOT NULL,
-  id_Address Integer NOT NULL
-)
-/
-
--- Create indexes for table Offices
-
-CREATE INDEX IX_runs ON Offices (Computer_Service_id)
-/
-
-CREATE INDEX IX_has_address ON Offices (id_Address)
-/
-
--- Add keys for table Offices
-
-ALTER TABLE Offices ADD CONSTRAINT OfficePK PRIMARY KEY (id_Offices)
-/
-
--- Table Employees
-
-CREATE TABLE Employees(
-  id_Employee Integer NOT NULL,
-  Name Varchar2(20 ) NOT NULL,
-  Surname Varchar2(30 ) NOT NULL,
-  Sex Char(1 ) NOT NULL
-        CONSTRAINT CheckConstraintA1a CHECK (Sex IN ('F', 'M'))
-        CHECK (Sex IN ('F', 'M')),
-  Email Varchar2(30 ) NOT NULL,
-  Phone_number Varchar2(12 ) NOT NULL,
-  Date_of_birth Date NOT NULL,
-  Date_of_employment Date NOT NULL,
-  Role Varchar2(9 ) NOT NULL
-        CHECK (Role IN ('Repairman', 'Manager')),
-  PESEL Char(11 ),
-  Account_no Char(26 ),
-  id_Address Integer NOT NULL,
-  id_Offices Integer NOT NULL
-)
-/
-
--- Create indexes for table Employees
-
-CREATE INDEX IX_Employee_has_address ON Employees (id_Address)
-/
-
-CREATE INDEX IX_Employee_has_office ON Employees (id_Offices)
-/
-
--- Add keys for table Employees
-
-ALTER TABLE Employees ADD CONSTRAINT EmployeePK PRIMARY KEY (id_Employee)
-/
-
--- Table Orders
-
-CREATE TABLE Orders(
-  id_Order Integer NOT NULL,
-  Status Varchar2(11 ) NOT NULL
-        CHECK (Status IN ('Not started', 'In progress', 'Completed')),
-  Order_date Date NOT NULL,
-  Price Number(8,2) NOT NULL,
-  Hand_out_date Date,
-  Client_id Integer NOT NULL
-)
-/
-
--- Create indexes for table Orders
-
-CREATE INDEX IX_makes_an_order ON Orders (Client_id)
-/
-
--- Add keys for table Orders
-
-ALTER TABLE Orders ADD CONSTRAINT TicketPK PRIMARY KEY (id_Order)
-/
-
--- Table Clients
-
-CREATE TABLE Clients(
-  id_Client Integer NOT NULL,
-  Name Varchar2(20 ) NOT NULL,
-  Surname Varchar2(30 ) NOT NULL,
-  Sex Char(1 ) NOT NULL
-        CONSTRAINT CheckConstraintA1 CHECK (Sex IN ('F', 'M'))
-        CHECK (Sex IN ('F', 'M')),
-  Email Varchar2(30 ) NOT NULL,
-  Phone_number Varchar2(12 ) NOT NULL,
-  id_Address Integer
-)
-/
-
--- Create indexes for table Clients
-
-CREATE INDEX IX_Client_has_address ON Clients (id_Address)
-/
-
--- Add keys for table Clients
-
-ALTER TABLE Clients ADD CONSTRAINT ClientPK PRIMARY KEY (id_Client)
-/
-
--- Table Devices
-
-CREATE TABLE Devices(
-  id_Device Integer NOT NULL,
-  Type Integer NOT NULL
-        CHECK (Type IN ('Mobile device', 'Computer')),
-  Order_id Integer NOT NULL,
-  id_Model Integer NOT NULL
-)
-/
-
--- Create indexes for table Devices
-
-CREATE INDEX IX_consists_of ON Devices (Order_id)
-/
-
-CREATE INDEX IX_Device_has ON Devices (id_Model)
-/
-
--- Add keys for table Devices
-
-ALTER TABLE Devices ADD CONSTRAINT DevicePK PRIMARY KEY (id_Device)
-/
-
--- Table Employees_Orders
-
-CREATE TABLE Employees_Orders(
-  Order_id Integer NOT NULL,
-  Employee_id Integer NOT NULL
-)
-/
-
--- Table Addresses
-
-CREATE TABLE Addresses(
-  id_Address Integer NOT NULL,
-  City Varchar2(20 ) NOT NULL,
-  Street Varchar2(30 ) NOT NULL,
-  Flat_no Varchar2(5 ) NOT NULL,
-  Postal code Char(6 ) NOT NULL
-)
-/
-
--- Add keys for table Addresses
-
-ALTER TABLE Addresses ADD CONSTRAINT PK_Addresses PRIMARY KEY (id_Address)
-/
-
--- Table and Columns comments section
-
-COMMENT ON COLUMN Addresses.id_Address IS 'Address id number, primary key'
-/
-
--- Table Owners
-
-CREATE TABLE Owners(
-  id_Owner Integer NOT NULL,
-  Name Varchar2(20 ) NOT NULL,
-  Surname Varchar2(30 ) NOT NULL,
-  id_Computer_Service Integer NOT NULL
-)
-/
-
--- Create indexes for table Owners
-
-CREATE INDEX IX_has_owner ON Owners (id_Computer_Service)
-/
-
--- Add keys for table Owners
-
-ALTER TABLE Owners ADD CONSTRAINT PK_Owners PRIMARY KEY (id_Owner)
-/
-
--- Table Specializations
-
-CREATE TABLE Specializations(
-  Id_Specialization Integer NOT NULL,
-  Specialization_name Integer NOT NULL
-        CHECK (Specialization IN ('Mobile device', 'Computer')),
-  Description Varchar2(100 )
-)
-/
-
--- Add keys for table Specializations
-
-ALTER TABLE Specializations ADD CONSTRAINT PK_Specializations PRIMARY KEY (Id_Specialization)
-/
-
-ALTER TABLE Specializations ADD CONSTRAINT Name UNIQUE (Specialization_name)
-/
-
--- Table Aquired_specializations
-
-CREATE TABLE Aquired_specializations(
-  Id_Specialization Integer NOT NULL,
-  id_Employee Integer NOT NULL
-)
-/
-
--- Add keys for table Aquired_specializations
-
-ALTER TABLE Aquired_specializations ADD CONSTRAINT PK_Aquired_specializations PRIMARY KEY (Id_Specialization,id_Employee)
-/
-
--- Table Salaries
-
-CREATE TABLE Salaries(
-  id_Salary Integer NOT NULL,
-  Date Date NOT NULL,
-  Basic_salary Number(8,2) NOT NULL,
-  Extra_salary Number(8,2) NOT NULL,
-  id_Employee Integer NOT NULL
-)
-/
-
--- Create indexes for table Salaries
-
-CREATE INDEX IX_gets_salaries ON Salaries (id_Employee)
-/
-
--- Add keys for table Salaries
-
-ALTER TABLE Salaries ADD CONSTRAINT PK_Salaries PRIMARY KEY (id_Salary)
-/
-
--- Table and Columns comments section
-
-COMMENT ON COLUMN Salaries.id_Salary IS 'Salary id number'
-/
-COMMENT ON COLUMN Salaries.Date IS 'Date of payroll'
-/
-COMMENT ON COLUMN Salaries.Basic_salary IS 'Basic salary'
-/
-COMMENT ON COLUMN Salaries.Extra_salary IS 'Extra salary'
-/
-
--- Table Manufacturers
-
-CREATE TABLE Manufacturers(
-  id_Manufacturer Integer NOT NULL,
-  Name Varchar2(20 ) NOT NULL,
-  Description Varchar2(100 )
-)
-/
-
--- Add keys for table Manufacturers
-
-ALTER TABLE Manufacturers ADD CONSTRAINT PK_Manufacturers PRIMARY KEY (id_Manufacturer)
-/
-
-ALTER TABLE Manufacturers ADD CONSTRAINT Manu_Name UNIQUE (Name)
-/
-
--- Table Models
-
-CREATE TABLE Models(
-  id_Model Integer NOT NULL,
-  Name Varchar2(20 ) NOT NULL,
-  Description Varchar2(100 )
-)
-/
-
--- Create indexes for table Models
-
-CREATE INDEX IX_Models_have_manufacturers ON Models (Name)
-/
-
--- Add keys for table Models
-
-ALTER TABLE Models ADD CONSTRAINT PK_Models PRIMARY KEY (id_Model)
-/
-
--- Create foreign keys (relationships) section ------------------------------------------------- 
-ALTER TABLE Offices ADD CONSTRAINT runs FOREIGN KEY (Computer_Service_id) REFERENCES Computer_Services (id_Computer_Service)
-/
-
-ALTER TABLE Orders ADD CONSTRAINT makes_an_order FOREIGN KEY (Client_id) REFERENCES Clients (id_Client)
-/
-
-ALTER TABLE Devices ADD CONSTRAINT consists_of FOREIGN KEY (Order_id) REFERENCES Orders (id_Order)
-/
-
-ALTER TABLE Owners ADD CONSTRAINT has_owner FOREIGN KEY (id_Computer_Service) REFERENCES Computer_Services (id_Computer_Service)
-/
-
-ALTER TABLE Offices ADD CONSTRAINT Office_has_address FOREIGN KEY (id_Address) REFERENCES Addresses (id_Address)
-/
-
-ALTER TABLE Employees ADD CONSTRAINT Employee_has_address FOREIGN KEY (id_Address) REFERENCES Addresses (id_Address)
-/
-
-ALTER TABLE Clients ADD CONSTRAINT Client_has_address FOREIGN KEY (id_Address) REFERENCES Addresses (id_Address)
-/
-
-ALTER TABLE Aquired_specializations ADD CONSTRAINT has FOREIGN KEY (Id_Specialization) REFERENCES Specializations (Id_Specialization)
-/
-
-ALTER TABLE Aquired_specializations ADD CONSTRAINT specializes_in FOREIGN KEY (id_Employee) REFERENCES Employees (id_Employee)
-/
-
-ALTER TABLE Salaries ADD CONSTRAINT Employee_gets_salary FOREIGN KEY (id_Employee) REFERENCES Employees (id_Employee)
-/
-
-ALTER TABLE Models ADD CONSTRAINT Manufacturer_produces FOREIGN KEY (Name) REFERENCES Manufacturers (Name)
-/
-
-ALTER TABLE Devices ADD CONSTRAINT Device_has FOREIGN KEY (id_Model) REFERENCES Models (id_Model)
-/
-
-ALTER TABLE Employees ADD CONSTRAINT employs FOREIGN KEY (id_Offices) REFERENCES Offices (id_Offices)
-/
+## TO DO - wstawić kod DDL tutaj
 
 ## 5.3 TO DO - Examples of SQL queries
 
