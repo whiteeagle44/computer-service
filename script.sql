@@ -1,110 +1,12 @@
 ﻿/*
 Created: 12/6/2021
-Modified: 12/9/2021
+Modified: 12/22/2021
 Project: Computer Service
 Model: Logical Model
 Author: Piotr Kitłowski, Marcin Jankowski
 Database: Oracle 11g Release 1
 */
 
-
--- Create sequences section -------------------------------------------------
-
-CREATE SEQUENCE Computer_Services_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Owners_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Clients_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Addresses_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Employees_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Specializations_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Orders_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Salaries_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Devices_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Models_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Manufacturers_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
-
-CREATE SEQUENCE Offices_Seq1
- INCREMENT BY 1
- START WITH 1
- NOMAXVALUE
- NOMINVALUE
- CACHE 20
-/
 
 -- Create tables section -------------------------------------------------
 
@@ -156,6 +58,7 @@ CREATE TABLE Employees(
         CONSTRAINT CheckConstraintA1a CHECK (Sex IN ('F', 'M'))
         CHECK (Sex IN ('F', 'M')),
   Email Varchar2(30 ) NOT NULL,
+  Password Varchar2(20 ) NOT NULL,
   Phone_number Varchar2(12 ) NOT NULL,
   Date_of_birth Date NOT NULL,
   Date_of_employment Date NOT NULL,
@@ -200,7 +103,7 @@ CREATE TABLE Orders(
 CREATE INDEX IX_makes_an_order ON Orders (Client_id)
 /
 
-CREATE INDEX IX_Relationship1 ON Orders (id_Employee)
+CREATE INDEX IX_is_fullfilled_by ON Orders (id_Employee)
 /
 
 -- Add keys for table Orders
@@ -218,6 +121,7 @@ CREATE TABLE Clients(
         CONSTRAINT CheckConstraintA1 CHECK (Sex IN ('F', 'M'))
         CHECK (Sex IN ('F', 'M')),
   Email Varchar2(30 ) NOT NULL,
+  Password Varchar2(20 ) NOT NULL,
   Phone_number Varchar2(12 ) NOT NULL,
   id_Address Integer,
   id_Computer_Service Integer NOT NULL
@@ -229,7 +133,7 @@ CREATE TABLE Clients(
 CREATE INDEX IX_Client_has_address ON Clients (id_Address)
 /
 
-CREATE INDEX IX_Relationship2 ON Clients (id_Computer_Service)
+CREATE INDEX IX_Client_orders_in_cs ON Clients (id_Computer_Service)
 /
 
 -- Add keys for table Clients
@@ -288,6 +192,8 @@ CREATE TABLE Owners(
   id_Owner Integer NOT NULL,
   Name Varchar2(20 ) NOT NULL,
   Surname Varchar2(30 ) NOT NULL,
+  Email Varchar2(30 ) NOT NULL,
+  Password Varchar2(20 ) NOT NULL,
   id_Computer_Service Integer NOT NULL
 )
 /
@@ -401,174 +307,6 @@ CREATE INDEX IX_Models_have_manufacturers ON Models (Name)
 ALTER TABLE Models ADD CONSTRAINT PK_Models PRIMARY KEY (id_Model)
 /
 
--- Trigger for sequence Computer_Services_Seq1 for column id_Computer_Service in table Computer_Services ---------
-CREATE OR REPLACE TRIGGER ts_Computer_Services_Compute_0 BEFORE INSERT
-ON Computer_Services FOR EACH ROW
-BEGIN
-  :new.id_Computer_Service := Computer_Services_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Computer_Services_Comput_0 AFTER UPDATE OF id_Computer_Service
-ON Computer_Services FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Computer_Service in table Computer_Services as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Offices_Seq1 for column id_Offices in table Offices ---------
-CREATE OR REPLACE TRIGGER ts_Offices_Offices_Seq1 BEFORE INSERT
-ON Offices FOR EACH ROW
-BEGIN
-  :new.id_Offices := Offices_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Offices_Offices_Seq1 AFTER UPDATE OF id_Offices
-ON Offices FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Offices in table Offices as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Employees_Seq1 for column id_Employee in table Employees ---------
-CREATE OR REPLACE TRIGGER ts_Employees_Employees_Seq1 BEFORE INSERT
-ON Employees FOR EACH ROW
-BEGIN
-  :new.id_Employee := Employees_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Employees_Employees_Seq1 AFTER UPDATE OF id_Employee
-ON Employees FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Employee in table Employees as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Orders_Seq1 for column id_Order in table Orders ---------
-CREATE OR REPLACE TRIGGER ts_Orders_Orders_Seq1 BEFORE INSERT
-ON Orders FOR EACH ROW
-BEGIN
-  :new.id_Order := Orders_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Orders_Orders_Seq1 AFTER UPDATE OF id_Order
-ON Orders FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Order in table Orders as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Clients_Seq1 for column id_Client in table Clients ---------
-CREATE OR REPLACE TRIGGER ts_Clients_Clients_Seq1 BEFORE INSERT
-ON Clients FOR EACH ROW
-BEGIN
-  :new.id_Client := Clients_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Clients_Clients_Seq1 AFTER UPDATE OF id_Client
-ON Clients FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Client in table Clients as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Devices_Seq1 for column id_Device in table Devices ---------
-CREATE OR REPLACE TRIGGER ts_Devices_Devices_Seq1 BEFORE INSERT
-ON Devices FOR EACH ROW
-BEGIN
-  :new.id_Device := Devices_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Devices_Devices_Seq1 AFTER UPDATE OF id_Device
-ON Devices FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Device in table Devices as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Addresses_Seq1 for column id_Address in table Addresses ---------
-CREATE OR REPLACE TRIGGER ts_Addresses_Addresses_Seq1 BEFORE INSERT
-ON Addresses FOR EACH ROW
-BEGIN
-  :new.id_Address := Addresses_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Addresses_Addresses_Seq1 AFTER UPDATE OF id_Address
-ON Addresses FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Address in table Addresses as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Owners_Seq1 for column id_Owner in table Owners ---------
-CREATE OR REPLACE TRIGGER ts_Owners_Owners_Seq1 BEFORE INSERT
-ON Owners FOR EACH ROW
-BEGIN
-  :new.id_Owner := Owners_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Owners_Owners_Seq1 AFTER UPDATE OF id_Owner
-ON Owners FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Owner in table Owners as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Specializations_Seq1 for column Id_Specialization in table Specializations ---------
-CREATE OR REPLACE TRIGGER ts_Specializations_Specializ_0 BEFORE INSERT
-ON Specializations FOR EACH ROW
-BEGIN
-  :new.Id_Specialization := Specializations_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Specializations_Speciali_0 AFTER UPDATE OF Id_Specialization
-ON Specializations FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column Id_Specialization in table Specializations as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Salaries_Seq1 for column id_Salary in table Salaries ---------
-CREATE OR REPLACE TRIGGER ts_Salaries_Salaries_Seq1 BEFORE INSERT
-ON Salaries FOR EACH ROW
-BEGIN
-  :new.id_Salary := Salaries_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Salaries_Salaries_Seq1 AFTER UPDATE OF id_Salary
-ON Salaries FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Salary in table Salaries as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Manufacturers_Seq1 for column id_Manufacturer in table Manufacturers ---------
-CREATE OR REPLACE TRIGGER ts_Manufacturers_Manufacture_0 BEFORE INSERT
-ON Manufacturers FOR EACH ROW
-BEGIN
-  :new.id_Manufacturer := Manufacturers_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Manufacturers_Manufactur_0 AFTER UPDATE OF id_Manufacturer
-ON Manufacturers FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Manufacturer in table Manufacturers as it uses sequence.');
-END;
-/
-
--- Trigger for sequence Models_Seq1 for column id_Model in table Models ---------
-CREATE OR REPLACE TRIGGER ts_Models_Models_Seq1 BEFORE INSERT
-ON Models FOR EACH ROW
-BEGIN
-  :new.id_Model := Models_Seq1.nextval;
-END;
-/
-CREATE OR REPLACE TRIGGER tsu_Models_Models_Seq1 AFTER UPDATE OF id_Model
-ON Models FOR EACH ROW
-BEGIN
-  RAISE_APPLICATION_ERROR(-20010,'Cannot update column id_Model in table Models as it uses sequence.');
-END;
-/
-
 
 -- Create foreign keys (relationships) section ------------------------------------------------- 
 
@@ -642,7 +380,7 @@ ALTER TABLE Clients ADD CONSTRAINT has_client FOREIGN KEY (id_Computer_Service) 
 
 
 
-ALTER TABLE Orders ADD CONSTRAINT Relationship1 FOREIGN KEY (id_Employee) REFERENCES Employees (id_Employee)
+ALTER TABLE Orders ADD CONSTRAINT fulfills FOREIGN KEY (id_Employee) REFERENCES Employees (id_Employee)
 /
 
 
