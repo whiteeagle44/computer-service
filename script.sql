@@ -1,6 +1,6 @@
 ﻿/*
 Created: 12/6/2021
-Modified: 12/22/2021
+Modified: 1/7/2022
 Project: Computer Service
 Model: Logical Model
 Author: Piotr Kitłowski, Marcin Jankowski
@@ -103,7 +103,7 @@ CREATE TABLE Orders(
 CREATE INDEX IX_makes_an_order ON Orders (Client_id)
 /
 
-CREATE INDEX IX_is_fullfilled_by ON Orders (id_Employee)
+CREATE INDEX IX_is_fulfilled_by ON Orders (id_Employee)
 /
 
 -- Add keys for table Orders
@@ -172,7 +172,7 @@ CREATE TABLE Addresses(
   City Varchar2(20 ) NOT NULL,
   Street Varchar2(30 ) NOT NULL,
   Flat_no Varchar2(5 ) NOT NULL,
-  Postal code Char(6 ) NOT NULL
+  Postal_code Char(6 ) NOT NULL
 )
 /
 
@@ -213,7 +213,7 @@ ALTER TABLE Owners ADD CONSTRAINT PK_Owners PRIMARY KEY (id_Owner)
 CREATE TABLE Specializations(
   Id_Specialization Integer NOT NULL,
   Specialization_name Integer NOT NULL
-        CHECK (Specialization IN ('Mobile device', 'Computer')),
+        CHECK (Specialization_name IN ('Mobile device', 'Computer')),
   Description Varchar2(100 )
 )
 /
@@ -226,24 +226,24 @@ ALTER TABLE Specializations ADD CONSTRAINT PK_Specializations PRIMARY KEY (Id_Sp
 ALTER TABLE Specializations ADD CONSTRAINT Name UNIQUE (Specialization_name)
 /
 
--- Table Aquired_specializations
+-- Table Acquired_specializations
 
-CREATE TABLE Aquired_specializations(
+CREATE TABLE Acquired_specializations(
   Id_Specialization Integer NOT NULL,
   id_Employee Integer NOT NULL
 )
 /
 
--- Add keys for table Aquired_specializations
+-- Add keys for table Acquired_specializations
 
-ALTER TABLE Aquired_specializations ADD CONSTRAINT PK_Aquired_specializations PRIMARY KEY (Id_Specialization,id_Employee)
+ALTER TABLE Acquired_specializations ADD CONSTRAINT PK_Acquired_specializations PRIMARY KEY (Id_Specialization,id_Employee)
 /
 
 -- Table Salaries
 
 CREATE TABLE Salaries(
   id_Salary Integer NOT NULL,
-  Date Date NOT NULL,
+  Salary_date Date NOT NULL,
   Basic_salary Number(8,2) NOT NULL,
   Extra_salary Number(8,2) NOT NULL,
   id_Employee Integer NOT NULL
@@ -264,7 +264,7 @@ ALTER TABLE Salaries ADD CONSTRAINT PK_Salaries PRIMARY KEY (id_Salary)
 
 COMMENT ON COLUMN Salaries.id_Salary IS 'Salary id number'
 /
-COMMENT ON COLUMN Salaries.Date IS 'Date of payroll'
+COMMENT ON COLUMN Salaries.Salary_date IS 'Date of payroll'
 /
 COMMENT ON COLUMN Salaries.Basic_salary IS 'Basic salary'
 /
@@ -345,12 +345,12 @@ ALTER TABLE Clients ADD CONSTRAINT Client_has_address FOREIGN KEY (id_Address) R
 
 
 
-ALTER TABLE Aquired_specializations ADD CONSTRAINT has FOREIGN KEY (Id_Specialization) REFERENCES Specializations (Id_Specialization)
+ALTER TABLE Acquired_specializations ADD CONSTRAINT has FOREIGN KEY (Id_Specialization) REFERENCES Specializations (Id_Specialization)
 /
 
 
 
-ALTER TABLE Aquired_specializations ADD CONSTRAINT specializes_in FOREIGN KEY (id_Employee) REFERENCES Employees (id_Employee)
+ALTER TABLE Acquired_specializations ADD CONSTRAINT specializes_in FOREIGN KEY (id_Employee) REFERENCES Employees (id_Employee)
 /
 
 
